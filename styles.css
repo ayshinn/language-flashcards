@@ -349,6 +349,12 @@ button {
   -webkit-transform: rotateY(180deg);
 }
 
+/* Explicit front-face hide for browsers where backface-visibility fails (Firefox Android).
+   In working browsers this is imperceptible — the face is already rotating away. */
+.card.is-flipped .card-front {
+  opacity: 0;
+}
+
 .card-face {
   position: absolute;
   inset: 0;
