@@ -408,7 +408,17 @@ button {
   font-weight: 600;
   color: var(--ink);
   line-height: 1.25;
-  padding-left: 14px; /* keep text off the red margin line */
+  padding-left: 14px;
+}
+
+/* romanization line (second line in Korean cards) */
+.card-text .romanization {
+  display: block;
+  font-size: 0.45em;
+  font-weight: 400;
+  color: var(--ink-soft);
+  margin-top: 4px;
+  letter-spacing: 0.01em;
 }
 
 .speaker-btn {

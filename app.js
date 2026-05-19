@@ -166,11 +166,25 @@
     }
   }
 
+  function setCardText(el, text) {
+    const parts = text.split('\n');
+    if (parts.length > 1) {
+      el.innerHTML = '';
+      el.appendChild(document.createTextNode(parts[0]));
+      const rom = document.createElement('span');
+      rom.className = 'romanization';
+      rom.textContent = parts.slice(1).join(' ');
+      el.appendChild(rom);
+    } else {
+      el.textContent = text;
+    }
+  }
+
   function renderCard() {
     const c = state.queue[state.pos];
     if (!c) return;
-    cardEnEl.textContent = c.en;
-    cardEsEl.textContent = c.es;
+    setCardText(cardEnEl, c.en);
+    setCardText(cardEsEl, c.es);
     deckPosEl.textContent = String(state.pos + 1);
     deckTotalEl.textContent = String(state.queue.length);
     setFlipped(false);
@@ -470,7 +484,7 @@
     speakerBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       const c = state.queue[state.pos];
-      if (c) speak(c.es);
+      if (c) speak(c.es.split('\n')[0]);
     });
     // Prevent speaker click from also triggering card swipe pointer logic.
     speakerBtn.addEventListener('pointerdown', (e) => e.stopPropagation());
