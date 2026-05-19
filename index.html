@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#c89968" />
+  <title>Flashcards</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body data-view="home">
+
+  <!-- HOME -->
+  <section class="view view-home" data-view-name="home">
+    <header class="home-header">
+      <h1>Flashcards</h1>
+      <p class="subtitle">Pick a language</p>
+    </header>
+    <div class="lang-grid">
+      <button class="lang-tile" data-lang="spanish" type="button">
+        <span class="flag" aria-hidden="true">🇲🇽</span>
+        <span class="lang-name">Spanish</span>
+        <span class="lang-meta">240 cards · 3 levels</span>
+      </button>
+      <button class="lang-tile is-disabled" data-lang="korean" type="button" disabled aria-disabled="true">
+        <span class="flag" aria-hidden="true">🇰🇷</span>
+        <span class="lang-name">Korean</span>
+        <span class="lang-meta">Coming soon</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- LEVEL SELECT -->
+  <section class="view view-level" data-view-name="level" hidden>
+    <header class="top-bar">
+      <button class="icon-btn back-btn" data-action="back-home" type="button" aria-label="Back">←</button>
+      <h2 class="top-title" id="level-title">Spanish</h2>
+      <span class="icon-btn placeholder" aria-hidden="true"></span>
+    </header>
+    <div class="level-grid">
+      <button class="level-tile" data-level="1" type="button">
+        <span class="level-num">Level 1</span>
+        <span class="level-desc">Essentials &amp; greetings</span>
+        <span class="level-progress" data-progress-for="1">0 / 80 known</span>
+      </button>
+      <button class="level-tile" data-level="2" type="button">
+        <span class="level-num">Level 2</span>
+        <span class="level-desc">Daily situations</span>
+        <span class="level-progress" data-progress-for="2">0 / 80 known</span>
+      </button>
+      <button class="level-tile" data-level="3" type="button">
+        <span class="level-num">Level 3</span>
+        <span class="level-desc">Short sentences &amp; requests</span>
+        <span class="level-progress" data-progress-for="3">0 / 80 known</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- DECK / CARD VIEW -->
+  <section class="view view-deck" data-view-name="deck" hidden>
+    <header class="top-bar">
+      <button class="icon-btn back-btn" data-action="back-level" type="button" aria-label="Back">←</button>
+      <span class="deck-counter"><span id="deck-pos">1</span> / <span id="deck-total">80</span></span>
+      <button class="icon-btn" data-action="reset-deck" type="button" aria-label="Reset deck progress" title="Reset progress">⟳</button>
+    </header>
+
+    <div class="card-stage">
+      <div class="card" id="card" role="button" tabindex="0" aria-label="Flashcard, tap to flip">
+        <div class="card-inner" id="card-inner">
+          <div class="card-face card-front">
+            <span class="card-text" id="card-en"></span>
+          </div>
+          <div class="card-face card-back">
+            <span class="card-text" id="card-es"></span>
+            <button class="speaker-btn" id="speaker-btn" type="button" aria-label="Hear pronunciation">🔊</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-actions">
+      <button class="action-btn action-prev" data-action="prev" type="button" aria-label="Previous card" title="Previous">←</button>
+      <button class="action-btn action-known" data-action="known" type="button" aria-label="I know it" title="I know it" disabled>✓ I know it</button>
+      <button class="action-btn action-next" data-action="next" type="button" aria-label="Next card" title="Next">→</button>
+    </div>
+
+    <p class="hint" id="deck-hint">tap card to flip · swipe or use buttons</p>
+  </section>
+
+  <!-- SUMMARY -->
+  <section class="view view-summary" data-view-name="summary" hidden>
+    <header class="top-bar">
+      <button class="icon-btn back-btn" data-action="back-level" type="button" aria-label="Back">←</button>
+      <h2 class="top-title">Done!</h2>
+      <span class="icon-btn placeholder" aria-hidden="true"></span>
+    </header>
+    <div class="summary-body">
+      <p class="summary-headline">You knew</p>
+      <p class="summary-score"><span id="summary-known">0</span> <span class="of">of</span> <span id="summary-total">0</span></p>
+      <p class="summary-sub" id="summary-sub">Nice work.</p>
+      <div class="summary-actions">
+        <button class="primary-btn" data-action="shuffle-remaining" type="button" id="shuffle-btn">Shuffle remaining</button>
+        <button class="secondary-btn" data-action="back-level" type="button">Back to levels</button>
+        <button class="ghost-btn" data-action="reset-deck" type="button">Reset deck</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="./app.js" defer></script>
+</body>
+</html>
