@@ -345,10 +345,11 @@
     const flipPart = state.flipped ? 'rotateY(180deg)' : '';
     inner.style.transform = `translate(${tx}px, ${ty}px) rotate(${rot}deg) ${flipPart}`.trim();
     setTimeout(() => {
-      // Reset transform BEFORE rendering next, hidden by CSS until next render.
       inner.style.transition = 'none';
       inner.style.transform = '';
-      // Force reflow so next transition (flip back to front) animates cleanly.
+      // Strip is-flipped while transition is disabled so setFlipped(false)
+      // in renderCard() is a no-op and never triggers the flip-back animation.
+      card.classList.remove('is-flipped');
       void inner.offsetWidth;
       inner.style.transition = '';
       after();
