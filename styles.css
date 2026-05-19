@@ -204,17 +204,21 @@ button {
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
-  will-change: transform;
+  perspective: 1400px;
 }
 
 .card-inner {
   position: absolute;
   inset: 0;
   transform-style: preserve-3d;
-  transition: transform 420ms cubic-bezier(0.4, 0.05, 0.2, 1);
+  -webkit-transform-style: preserve-3d;
+  transition: transform 420ms cubic-bezier(0.4, 0.05, 0.2, 1), -webkit-transform 420ms cubic-bezier(0.4, 0.05, 0.2, 1);
 }
 
-.card.is-flipped .card-inner { transform: rotateY(180deg); }
+.card.is-flipped .card-inner {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+}
 
 .card-face {
   position: absolute;
@@ -230,7 +234,6 @@ button {
   text-align: center;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  overflow: hidden;
 }
 
 /* notebook rule lines + red margin */
@@ -258,7 +261,10 @@ button {
   pointer-events: none;
 }
 
-.card-back { transform: rotateY(180deg); }
+.card-back {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+}
 
 .card-text {
   position: relative;
