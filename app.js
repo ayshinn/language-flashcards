@@ -115,6 +115,47 @@
   }
 
   // ---------- rendering ----------
+  function renderReview() {
+    const listEl = document.getElementById('review-list');
+    if (!listEl || !state.deck) return;
+    listEl.innerHTML = '';
+    let totalKnown = 0;
+
+    for (const lvl of [1, 2, 3]) {
+      const known = loadKnown(state.language, lvl);
+      if (known.size === 0) continue;
+      const cards = state.cardsAll.filter(c => c.level === lvl && known.has(c.id));
+      totalKnown += cards.length;
+
+      const hdr = document.createElement('div');
+      hdr.className = 'review-level-header';
+      hdr.textContent = `Level ${lvl} — ${cards.length} known`;
+      listEl.appendChild(hdr);
+
+      for (const c of cards) {
+        const row = document.createElement('div');
+        row.className = 'review-row';
+        row.dataset.id = c.id;
+        row.dataset.level = String(lvl);
+        row.innerHTML = `
+          <span class="review-es">${c.es}</span>
+          <span class="review-divider">·</span>
+          <span class="review-en">${c.en}</span>
+          <span class="review-unmark-wrap">
+            <button class="review-unmark-btn" type="button">↩ Mark as unknown</button>
+          </span>`;
+        listEl.appendChild(row);
+      }
+    }
+
+    if (totalKnown === 0) {
+      const empty = document.createElement('p');
+      empty.className = 'review-empty';
+      empty.textContent = 'No cards marked known yet. Flip cards and tap ✓ to build this list.';
+      listEl.appendChild(empty);
+    }
+  }
+
   function renderLevelProgress() {
     if (!state.deck) return;
     for (const lvl of [1, 2, 3]) {
@@ -460,7 +501,50 @@
             markKnownAndAdvance();
           });
         }
+      } else if (action === 'open-review') {
+        renderReview();
+        showView('review');
       }
+    });
+
+    // Review: row tap expands; unmark button removes from known.
+    document.getElementById('review-list').addEventListener('click', (e) => {
+      const unmarkBtn = e.target.closest('.review-unmark-btn');
+      const row = e.target.closest('.review-row');
+      if (!row) return;
+
+      if (unmarkBtn) {
+        e.stopPropagation();
+        const id = row.dataset.id;
+        const lvl = Number(row.dataset.level);
+        const known = loadKnown(state.language, lvl);
+        known.delete(id);
+        saveKnown(state.language, lvl, known);
+        row.remove();
+        // Update header count or remove it if section is now empty.
+        const allRows = document.querySelectorAll(`.review-row[data-level="${lvl}"]`);
+        if (allRows.length === 0) {
+          const headers = document.querySelectorAll('.review-level-header');
+          headers.forEach(h => {
+            if (h.textContent.startsWith(`Level ${lvl}`)) h.remove();
+          });
+          const remaining = document.querySelectorAll('.review-row').length;
+          if (remaining === 0) renderReview(); // show empty state
+        } else {
+          // Update header count.
+          document.querySelectorAll('.review-level-header').forEach(h => {
+            if (h.textContent.startsWith(`Level ${lvl}`)) {
+              h.textContent = `Level ${lvl} — ${allRows.length} known`;
+            }
+          });
+        }
+        return;
+      }
+
+      // Toggle expanded state to show/hide unmark button.
+      const wasExpanded = row.classList.contains('is-expanded');
+      document.querySelectorAll('.review-row.is-expanded').forEach(r => r.classList.remove('is-expanded'));
+      if (!wasExpanded) row.classList.add('is-expanded');
     });
   }
 

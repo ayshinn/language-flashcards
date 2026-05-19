@@ -53,6 +53,21 @@
         <span class="level-progress" data-progress-for="3">0 / 80 known</span>
       </button>
     </div>
+    <button class="review-trigger-btn" data-action="open-review" type="button">
+      ✓ Review known cards
+    </button>
+  </section>
+
+  <!-- REVIEW -->
+  <section class="view view-review" data-view-name="review" hidden>
+    <header class="top-bar">
+      <button class="icon-btn back-btn" data-action="back-level" type="button" aria-label="Back">←</button>
+      <h2 class="top-title">Known Cards</h2>
+      <span class="icon-btn placeholder" aria-hidden="true"></span>
+    </header>
+    <div class="review-scroll">
+      <div class="review-paper" id="review-list"></div>
+    </div>
   </section>
 
   <!-- DECK / CARD VIEW -->
